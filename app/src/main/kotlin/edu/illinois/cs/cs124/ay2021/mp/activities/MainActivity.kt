@@ -1,6 +1,7 @@
 package edu.illinois.cs.cs124.ay2021.mp.activities
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -50,6 +51,7 @@ class MainActivity :
     override fun onCreate(unused: Bundle?) {
         super.onCreate(unused)
 
+        Log.d(TAG, "onCreate ran")
         // Initialize our data binding
         // This allows us to more easily access elements of our layout
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
@@ -78,7 +80,7 @@ class MainActivity :
         setSupportActionBar(binding.toolbar)
 
         // Set the activity title
-        title = "Find Restuarants"
+        title = "Find Restaurants"
     }
 
     /*
