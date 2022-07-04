@@ -1,0 +1,38 @@
+exceptions:
+  SwallowedException:
+    active: false
+  TooGenericExceptionCaught:
+    active: false
+  PrintStackTrace:
+    active: false
+style:
+  ReturnCount:
+    max: 8
+  NewLineAtEndOfFile:
+    active: false
+  UnusedPrivateMember:
+    active: false
+  MagicNumber:
+    active: false
+comments:
+  EndOfSentenceFormat:
+    active: true
+  UndocumentedPublicClass:
+    active: false
+  UndocumentedPublicFunction:
+    active: false
+  UndocumentedPublicProperty:
+    active: false
+empty-blocks:
+  EmptyFunctionBlock:
+    active: false
+naming:
+  MatchingDeclarationName:
+    active: false
+formatting:
+  Filename:
+    active: false
+  FinalNewline:
+    active: false
+  ChainWrapping:
+    active: false

@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Eatable</string>
+    <string name="search_title">Search Restaurants</string>
+    <string name="search_courses">Search Restaurants</string>
+    <string name="search_icon">Search Icon</string>
+</resources>

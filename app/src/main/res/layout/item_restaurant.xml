@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="listener"
+            type="edu.illinois.cs.cs124.ay2021.mp.adapters.RestaurantListAdapter.Listener" />
+
+        <variable
+            name="restaurant"
+            type="edu.illinois.cs.cs124.ay2021.mp.models.Restaurant" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:gravity="center_vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="@{view -> listener.onClicked(restaurant)}">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="@{restaurant.name}"
+            android:textColor="@android:color/black"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+</layout>
