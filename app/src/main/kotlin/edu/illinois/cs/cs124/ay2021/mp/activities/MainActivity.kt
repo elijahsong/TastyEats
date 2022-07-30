@@ -15,7 +15,7 @@ import edu.illinois.cs.cs124.ay2021.mp.network.Client
 
 // You may find this useful when adding logging
 @Suppress("unused")
-private val TAG = MainActivity::class.java.name
+val TAG = MainActivity::class.java.name
 
 /*
  * App main activity.
