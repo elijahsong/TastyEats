@@ -108,7 +108,7 @@ class MP1Test {
         // THIS TEST SHOULD NOT WORK INITIALLY
         // To enable it, remove or comment out the @Ignore annotation below
         // This test checks to make sure that you are parsing the right fields from the node JSON
-        @Ignore("Enable once you begin working on search")
+        // @Ignore("Enable once you begin working on search")
         @Test(timeout = 1000L)
         fun testLoadRestaurantFields() {
             // Build a GET request for /restaurants

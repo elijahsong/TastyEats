@@ -40,5 +40,31 @@ class Restaurant(val name: String, val cuisine: String) : SortedListAdapter.View
 Kotlin extension method for lists
  */
 fun List<Restaurant>.search(input: String): List<Restaurant> {
-    return this
+    val cleanInput = input.lowercase().trim()
+    val toReturn = mutableListOf<Restaurant>()
+
+    if (cleanInput.isEmpty() || cleanInput == "") {
+        return this.toList()
+    }
+    // Add all cuisines to a list
+    val cuisines = mutableSetOf<String>()
+    for (restaurant in this) { cuisines += restaurant.cuisine }
+
+    // Check if cuisine in the list
+    if (cuisines.contains(cleanInput)) {
+        // return all restaurants from that cuisine
+        for (restaurant in this) {
+            if (restaurant.cuisine == cleanInput) {
+                toReturn += restaurant
+            }
+        }
+    } else {
+        for (restaurant in this) {
+            if (restaurant.name.contains(cleanInput) || restaurant.cuisine.contains(cleanInput)) {
+                toReturn += restaurant
+            }
+        }
+    }
+    println(toReturn)
+    return toReturn
 }

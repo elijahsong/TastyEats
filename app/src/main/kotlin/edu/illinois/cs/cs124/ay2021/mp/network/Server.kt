@@ -39,13 +39,14 @@ private val TAG = Server::class.java.simpleName
  */
 fun loadRestaurants(): String {
     val input = Scanner(Server::class.java.getResourceAsStream("/restaurants.csv"), "UTF-8").useDelimiter("\\A").next()
-    val csvReader = CSVReaderBuilder(StringReader(input)).withSkipLines(1).build()
+    val csvReader = CSVReaderBuilder(StringReader(input)).withSkipLines(1).build() // skip headers
     val restaurants = JsonNodeFactory.instance.arrayNode()
     for (parts in csvReader) {
-        val restaurant = JsonNodeFactory.instance.objectNode().apply {
+        val restaurant = JsonNodeFactory.instance.objectNode().apply { // same as restaurant.put()
             put("id", parts[0])
             put("name", parts[1])
             put("cuisine", parts[2])
+            put("url", parts[3])
         }
         restaurants.add(restaurant)
     }
