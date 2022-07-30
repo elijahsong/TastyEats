@@ -20,9 +20,14 @@ class Restaurant(val name: String, val cuisine: String) : SortedListAdapter.View
          * Currently this does not work, but you will need to implement it correctly for MP1.
          * Comparator is like Comparable, except it defines one possible ordering, not a canonical ordering for a class,
          * and so is implemented as a separate method rather than directly by the class as is done with Comparable.
+         * !! We may implement other sorts in the future!
          */
-        val SORT_BY_NAME = Comparator<Restaurant> { restaurant1, restaurant2 -> 0 }
+        val SORT_BY_NAME = Comparator<Restaurant> { restaurant1, restaurant2 ->
+            restaurant1.name.compareTo(restaurant2.name)
+        }
     }
+
+    // You should eventually add a toString method for debugging purposes
 
     // You should not need to modify this code, which is used by the list adapter component
     override fun <T : Any> isSameModelAs(model: T) = this == model
@@ -31,6 +36,9 @@ class Restaurant(val name: String, val cuisine: String) : SortedListAdapter.View
     override fun <T : Any> isContentTheSameAs(model: T) = this == model
 }
 
+/*
+Kotlin extension method for lists
+ */
 fun List<Restaurant>.search(input: String): List<Restaurant> {
     return this
 }
