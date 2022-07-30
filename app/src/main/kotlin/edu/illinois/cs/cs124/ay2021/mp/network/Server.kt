@@ -45,6 +45,7 @@ fun loadRestaurants(): String {
         val restaurant = JsonNodeFactory.instance.objectNode().apply {
             put("id", parts[0])
             put("name", parts[1])
+            put("cuisine", parts[2])
         }
         restaurants.add(restaurant)
     }

@@ -74,6 +74,7 @@ class MainActivity :
         }
 
         // Bind to the search component so that we can receive events when the contents of the search box change
+        // registers the callback
         binding.search.setOnQueryTextListener(this)
 
         // Bind the toolbar that contains our search component
@@ -88,6 +89,7 @@ class MainActivity :
      * Eventually (MP1) we'll want to update the list of restaurants shown based on their input.
      */
     override fun onQueryTextChange(query: String): Boolean {
+        Log.i(TAG, "onQueryTextChange: $query")
         return true
     }
 
@@ -95,7 +97,9 @@ class MainActivity :
      * Called when the user clicks on one of the restaurants in the list.
      * Eventually (MP2) we'll launch a new activity here so they can see the restaurant details.
      */
-    override fun onClicked(restaurant: Restaurant) {}
+    override fun onClicked(restaurant: Restaurant) {
+        Log.i(TAG, "Someone clicked on ${restaurant.name}")
+    }
 
     /*
      * Called when the user submits their search query.

@@ -11,8 +11,8 @@ import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
  *
  */
 @Suppress("unused")
-class Restaurant(val name: String) : SortedListAdapter.ViewModel {
-    constructor() : this("")
+class Restaurant(val name: String, val cuisine: String) : SortedListAdapter.ViewModel {
+    constructor() : this("", "")
 
     companion object {
         /*
@@ -29,4 +29,8 @@ class Restaurant(val name: String) : SortedListAdapter.ViewModel {
 
     // You should not need to modify this code, which is used by the list adapter component
     override fun <T : Any> isContentTheSameAs(model: T) = this == model
+}
+
+fun List<Restaurant>.search(input: String): List<Restaurant> {
+    return this
 }
