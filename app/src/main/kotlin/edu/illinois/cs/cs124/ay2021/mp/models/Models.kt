@@ -11,8 +11,8 @@ import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
  *
  */
 @Suppress("unused")
-class Restaurant(val name: String, val cuisine: String) : SortedListAdapter.ViewModel {
-    constructor() : this("", "")
+class Restaurant(val name: String, val cuisine: String, val id: String) : SortedListAdapter.ViewModel {
+    constructor() : this("", "", "")
 
     companion object {
         /*
@@ -71,4 +71,21 @@ fun List<Restaurant>.search(input: String): List<Restaurant> {
         }
     }
     return toReturn
+}
+
+/*
+ * Model storing information about preferences retrieved from the restaurant server.
+ *
+ * You will need to understand some of the code in this file and make changes starting with MP2 part 1.
+ *
+ */
+class Preference
+
+/*
+ * Related restaurants
+ */
+class RelatedRestaurants(restaurants: List<Restaurant>, preferences: List<Preference>) {
+    fun getRelated(from: String): Map<String, Int> {
+        return mapOf()
+    }
 }

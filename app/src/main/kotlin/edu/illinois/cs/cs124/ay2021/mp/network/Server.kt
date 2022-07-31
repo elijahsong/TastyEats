@@ -53,6 +53,12 @@ fun loadRestaurants(): String {
     return restaurants.toPrettyString()
 }
 
+/*
+ * Load preferences from CSV and convert to JSON
+ */
+fun loadPreferences(): String {
+    return ""
+}
 // Number of restaurants that we expect to find in the CSV file
 // Normally this wouldn't be hardcoded but it's useful for testing
 const val RESTAURANT_COUNT = 255

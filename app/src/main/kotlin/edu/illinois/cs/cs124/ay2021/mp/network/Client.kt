@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import edu.illinois.cs.cs124.ay2021.mp.application.EatableApplication
+import edu.illinois.cs.cs124.ay2021.mp.models.Preference
 import edu.illinois.cs.cs124.ay2021.mp.models.Restaurant
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
@@ -98,6 +99,12 @@ object Client {
         requestQueue.add(restaurantsRequest)
     }
 
+    /*
+     * Retrieves preferences
+     */
+    fun getPreferences(callback: ((List<Preference>?) -> Unit)) {
+        callback(null)
+    }
     /*
      * You do not need to modify the code below.
      * However, you may want to understand how it works.
