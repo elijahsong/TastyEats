@@ -11,6 +11,7 @@ import edu.illinois.cs.cs124.ay2021.mp.adapters.RestaurantListAdapter
 import edu.illinois.cs.cs124.ay2021.mp.application.EatableApplication
 import edu.illinois.cs.cs124.ay2021.mp.databinding.ActivityMainBinding
 import edu.illinois.cs.cs124.ay2021.mp.models.Restaurant
+import edu.illinois.cs.cs124.ay2021.mp.models.search
 import edu.illinois.cs.cs124.ay2021.mp.network.Client
 
 // You may find this useful when adding logging
@@ -44,6 +45,9 @@ class MainActivity :
     // Reference to the persistent Application instance
     private lateinit var application: EatableApplication
 
+    // onCreate will put a copy of the restaurant list here
+    private var copyOfRestaurants = mutableListOf<Restaurant>()
+
     /*
      * onCreate is the first method called when this activity is created.
      * Code here normally does a variety of setup tasks.
@@ -68,13 +72,17 @@ class MainActivity :
          * Callbacks allow us to wait for something to complete and run code when it does.
          * In this case, once we retrieve a list of restaurants, we use it to update the contents of our list.
          */
-        Client.getRestaurants { restaurants ->
+        Client.getRestaurants(fun(restaurants: List<Restaurant>?) {
             check(restaurants != null)
+            for (restaurant in restaurants) {
+                copyOfRestaurants += restaurant
+            }
             listAdapter.edit().replaceAll(restaurants).commit()
-        }
+        })
 
         // Bind to the search component so that we can receive events when the contents of the search box change
-        // registers the callback
+
+        // registers the callback in onCreate method
         binding.search.setOnQueryTextListener(this)
 
         // Bind the toolbar that contains our search component
@@ -90,6 +98,7 @@ class MainActivity :
      */
     override fun onQueryTextChange(query: String): Boolean {
         Log.i(TAG, "onQueryTextChange: $query")
+        listAdapter.edit().replaceAll(copyOfRestaurants.search(query)).commit()
         return true
     }
 

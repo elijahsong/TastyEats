@@ -2,10 +2,7 @@
 
 package edu.illinois.cs.cs124.ay2021.mp.models
 
-import android.nfc.Tag
-import android.util.Log
 import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
-import edu.illinois.cs.cs124.ay2021.mp.activities.TAG
 
 /*
  * Model storing information about a restaurant retrieved from the restaurant server.
@@ -66,7 +63,8 @@ fun List<Restaurant>.search(input: String): List<Restaurant> {
         println("General search for $cleanInput")
         for (restaurant in this) {
             if (restaurant.name.lowercase().contains(cleanInput) || restaurant.cuisine.lowercase().contains
-                    (cleanInput)) {
+                (cleanInput)
+            ) {
                 println("Added ${restaurant.name}")
                 toReturn += restaurant
             }
