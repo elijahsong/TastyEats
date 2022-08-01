@@ -55,7 +55,7 @@ fun List<Restaurant>.search(input: String): List<Restaurant> {
         // return all restaurants from that cuisine
         println("Exact cuisine match $cleanInput")
         for (restaurant in this) {
-            if (restaurant.cuisine == cleanInput) {
+            if (restaurant.cuisine.equals(cleanInput)) {
                 toReturn += restaurant
             }
         }
