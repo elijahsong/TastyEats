@@ -57,7 +57,22 @@ fun loadRestaurants(): String {
  * Load preferences from CSV and convert to JSON
  */
 fun loadPreferences(): String {
-    return ""
+    val input = Server::class.java.getResource("/preferences.csv")!!.readText()
+    val preferences = JsonNodeFactory.instance.arrayNode()
+    for (line in input.lines()) {
+        val parts = line.trim().split(",")
+        val restaurantIDs = JsonNodeFactory.instance.arrayNode()
+        for (i in 1 until parts.size) {
+            restaurantIDs.add(parts[i])
+        }
+        val preference = JsonNodeFactory.instance.objectNode().apply {
+            put("id", parts[0])
+            put("restaurantIDs", restaurantIDs)
+        }
+        preferences.add(preference)
+    }
+    println(preferences.toPrettyString())
+    return preferences.toPrettyString()
 }
 // Number of restaurants that we expect to find in the CSV file
 // Normally this wouldn't be hardcoded but it's useful for testing
