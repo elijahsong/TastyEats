@@ -67,11 +67,10 @@ fun loadPreferences(): String {
         }
         val preference = JsonNodeFactory.instance.objectNode().apply {
             put("id", parts[0])
-            put("restaurantIDs", restaurantIDs)
+            replace("restaurantIDs", restaurantIDs)
         }
         preferences.add(preference)
     }
-    println(preferences.toPrettyString())
     return preferences.toPrettyString()
 }
 // Number of restaurants that we expect to find in the CSV file
@@ -84,6 +83,7 @@ object Server : Dispatcher() {
     // server startup, initialized with the result of calling loadRestaurants
     private val restaurantsJson: String = loadRestaurants()
 
+    private val preferencesJson: String = loadPreferences()
     // Helper method for the GET /restaurants route, called by the dispatch method below
     private fun getRestaurants() = MockResponse()
         // Indicate that the request succeeded (HTTP 200 OK)
@@ -97,6 +97,14 @@ object Server : Dispatcher() {
          */
         .setHeader("Content-Type", "application/json; charset=utf-8")
 
+    // Helper method for the GET /preferences route, called by the dispatch method below
+    private fun getPreferences() = MockResponse()
+        // Indicate that the request succeeded (HTTP 200 OK)
+        .setResponseCode(HttpURLConnection.HTTP_OK)
+        // Load the JSON string with preference info into the response body
+        .setBody(preferencesJson)
+        // Set HTTP header to indicate JSON with utf-8 charset
+        .setHeader("Content-Type", "application/json; charset=utf-8")
     /*
      * Server request dispatcher.
      * Responsible for parsing the HTTP request and determining how to respond.
@@ -125,6 +133,8 @@ object Server : Dispatcher() {
                     MockResponse().setBody("CS 124").setResponseCode(HttpURLConnection.HTTP_OK)
                 // Return the JSON list of restaurants for a GET request to the path /restaurants
                 path == "/restaurants" && method == "GET" -> getRestaurants()
+                // Return the JSON list of preferences for a GET request to the path /preferences
+                path == "/preferences" && method == "GET" -> getPreferences()
                 // If the route didn't match above, then we return a 404 NOT FOUND
                 else -> MockResponse().setResponseCode(HttpURLConnection.HTTP_NOT_FOUND)
                     // If we don't set a body here Volley will choke with a strange error.
