@@ -96,14 +96,17 @@ class RelatedRestaurants(restaurants: List<Restaurant>, preferences: List<Prefer
         // populate restaurantRelationship; each Preference object in preferences
         for (preference in preferences) {
             for (r1 in preference.restaurantIDs) {
+                if (!validRestaurants.contains(r1)) {
+                    break
+                }
                 for (r2 in preference.restaurantIDs) {
-                    if (r1 != r2 && validRestaurants.contains(r1) && validRestaurants.contains(r2)) {
+                    if (r1 != r2 && validRestaurants.contains(r2)) {
                         var strength = restRel[r1]?.get(r2) ?: 0
                         strength++
                         if (restRel[r1] != null) {
                             restRel[r1]!![r2] = strength
                         } else {
-                            restRel[r1] = mutableMapOf(r2 to 1)
+                            restRel[r1] = mutableMapOf(r2 to strength)
                         }
                     }
                 }
@@ -111,8 +114,6 @@ class RelatedRestaurants(restaurants: List<Restaurant>, preferences: List<Prefer
         }
     }
     fun getRelated(from: String): Map<String, Int> {
-        print(from)
-        println(restRel[from] ?: "empty")
         return restRel[from] ?: mapOf()
     }
 }
