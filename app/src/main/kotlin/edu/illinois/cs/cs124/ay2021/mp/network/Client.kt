@@ -46,6 +46,8 @@ private val objectMapper = ObjectMapper().apply {
  * You will need to understand some of the code here and make changes starting with MP2.
  */
 object Client {
+    val restaurantMap = mutableMapOf<String, Restaurant>()
+
     /*
      * Retrieve and deserialize a list of restaurants from the backend server.
      * Takes as an argument a callback method to call when the request completes which will be passed the deserialized
@@ -82,6 +84,10 @@ object Client {
                             object : TypeReference<List<Restaurant>>() {}
                         )
                     // Call the callback method and pass it the list of restaurants
+                    // Populate the restaurantMap with the list of restaurants (id to object)
+                    for (restaurant in restaurants) {
+                        restaurantMap[restaurant.id] = restaurant
+                    }
                     callback(restaurants)
                 } catch (e: Exception) {
                     // There are better approaches than returning null here, but we need to do something to make sure
@@ -123,7 +129,7 @@ object Client {
                 }
             },
             { error: VolleyError ->
-                //this code runs on failure
+                // this code runs on failure
                 Log.e(TAG, error.toString())
                 callback(null)
             }

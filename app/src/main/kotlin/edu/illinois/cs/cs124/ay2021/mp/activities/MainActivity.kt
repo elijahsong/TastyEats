@@ -1,5 +1,6 @@
 package edu.illinois.cs.cs124.ay2021.mp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
@@ -83,14 +84,14 @@ class MainActivity :
         })
          */
         // Using trailing lambda syntax
-        Log.d("TRACE","[MainActivity] Calling Client.getRestaurants")
+        Log.d("TRACE", "[MainActivity] Calling Client.getRestaurants")
         Client.getRestaurants { r ->
             Log.d("TRACE", "[MainActivity] Client.getRestaurants completed")
             check(r != null)
             restaurants = r
             listAdapter.edit().replaceAll(restaurants).commit()
         }
-        Log.d("TRACE","[MainActivity] Continuing with MainActivity")
+        Log.d("TRACE", "[MainActivity] Continuing with MainActivity")
 
         // Bind to the search component so that we can receive events when the contents of the search box change
 
@@ -119,7 +120,11 @@ class MainActivity :
      * Eventually (MP2) we'll launch a new activity here so they can see the restaurant details.
      */
     override fun onClicked(restaurant: Restaurant) {
-        Log.i(TAG, "Someone clicked on ${restaurant.name}")
+        Log.i(TAG, "Someone clicked on ${restaurant.name} with id ${restaurant.id}")
+        val launchRestaurantActivity = Intent(this, RestaurantActivity::class.java)
+        // Add the restaurant ID to the intent as an extra with key id
+        launchRestaurantActivity.putExtra("id", restaurant.id)
+        startActivity(launchRestaurantActivity)
     }
 
     /*
