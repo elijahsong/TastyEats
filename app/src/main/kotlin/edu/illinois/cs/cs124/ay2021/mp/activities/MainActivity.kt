@@ -45,8 +45,9 @@ class MainActivity :
     // Reference to the persistent Application instance
     private lateinit var application: EatableApplication
 
-    // onCreate will put a copy of the restaurant list here
-    private var copyOfRestaurants = mutableListOf<Restaurant>()
+    // onCreate will put a copy of the restaurant list here, we can put lateinit to force the list to initialize only
+    // when needed, thereby avoid the using of not knowing how long the list of restaurants is (advanced)
+    private lateinit var restaurants: List<Restaurant>
 
     /*
      * onCreate is the first method called when this activity is created.
@@ -72,6 +73,7 @@ class MainActivity :
          * Callbacks allow us to wait for something to complete and run code when it does.
          * In this case, once we retrieve a list of restaurants, we use it to update the contents of our list.
          */
+        /*
         Client.getRestaurants(fun(restaurants: List<Restaurant>?) {
             check(restaurants != null)
             for (restaurant in restaurants) {
@@ -79,6 +81,16 @@ class MainActivity :
             }
             listAdapter.edit().replaceAll(restaurants).commit()
         })
+         */
+        // Using trailing lambda syntax
+        Log.d("TRACE","[MainActivity] Calling Client.getRestaurants")
+        Client.getRestaurants { r ->
+            Log.d("TRACE", "[MainActivity] Client.getRestaurants completed")
+            check(r != null)
+            restaurants = r
+            listAdapter.edit().replaceAll(restaurants).commit()
+        }
+        Log.d("TRACE","[MainActivity] Continuing with MainActivity")
 
         // Bind to the search component so that we can receive events when the contents of the search box change
 
@@ -98,7 +110,7 @@ class MainActivity :
      */
     override fun onQueryTextChange(query: String): Boolean {
         Log.i(TAG, "onQueryTextChange: $query")
-        listAdapter.edit().replaceAll(copyOfRestaurants.search(query)).commit()
+        listAdapter.edit().replaceAll(restaurants.search(query)).commit()
         return true
     }
 

@@ -1,5 +1,6 @@
 package edu.illinois.cs.cs124.ay2021.mp.network
 
+import android.util.Log
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.opencsv.CSVReaderBuilder
 import edu.illinois.cs.cs124.ay2021.mp.application.EatableApplication
@@ -113,6 +114,7 @@ object Server : Dispatcher() {
     override fun dispatch(request: RecordedRequest): MockResponse {
         // Reject malformed requests
         if (request.path == null || request.method == null) {
+            Log.e(TAG, "[Server] Bad request to server")
             return MockResponse().setResponseCode(HttpURLConnection.HTTP_BAD_REQUEST)
         }
         return try {
@@ -120,6 +122,7 @@ object Server : Dispatcher() {
              * We perform a few normalization steps before we begin route dispatch, since this makes the if-else
              * statement below simpler.
              */
+            Log.d("TRACE", "[Server] Request received by server")
             // Normalize the path by removing trailing slashes and replacing multiple repeated slashes with single
             // slashes
             val path = request.path!!.removeSuffix("/").replace("/+", "/")
@@ -143,6 +146,7 @@ object Server : Dispatcher() {
             }
         } catch (e: Exception) {
             // Return a HTTP 500 if an exception is thrown
+            Log.e(TAG, "[Server] Bad request, HTTP 500 INTERNAL ERROR")
             MockResponse().setResponseCode(HttpURLConnection.HTTP_INTERNAL_ERROR)
         }
     }

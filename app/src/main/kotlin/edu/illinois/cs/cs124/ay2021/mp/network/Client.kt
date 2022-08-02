@@ -68,6 +68,7 @@ object Client {
             EatableApplication.SERVER_URL + "restaurants/", // URL to retrieve
             { response: String? ->
                 // This code runs on success
+                Log.d("TRACE", "[Client] restaurant request completed")
                 /*
                  * Deserialize the String into a List<Restaurant> using Jackson.
                  * The new TypeReference<List<Restaurant>>() {} is the bit of magic required to have Jackson
@@ -96,14 +97,39 @@ object Client {
                 callback(null)
             }
         )
-        requestQueue.add(restaurantsRequest)
+        Log.d("TRACE", "[Client] Queueing request for restaurants using volley")
+        requestQueue.add(restaurantsRequest) // ask volley to perform this request from the restaurantRequest object
     }
 
     /*
      * Retrieves preferences
      */
     fun getPreferences(callback: ((List<Preference>?) -> Unit)) {
-        callback(null)
+        val preferencesRequest = StringRequest(
+            Request.Method.GET,
+            EatableApplication.SERVER_URL + "preferences/", // URL to retrieve
+            { response: String? ->
+                // This code runs on success
+                Log.d("TRACE", "[Client] preference request completed")
+                try {
+                    val preferences =
+                        objectMapper.readValue(
+                            response,
+                            object : TypeReference<List<Preference>>() {}
+                        )
+                    callback(preferences)
+                } catch (e: Exception) {
+                    callback(null)
+                }
+            },
+            { error: VolleyError ->
+                //this code runs on failure
+                Log.e(TAG, error.toString())
+                callback(null)
+            }
+        )
+        Log.d("TRACE", "[Client] Queueing request for restaurants using volley")
+        requestQueue.add(preferencesRequest)
     }
     /*
      * You do not need to modify the code below.
