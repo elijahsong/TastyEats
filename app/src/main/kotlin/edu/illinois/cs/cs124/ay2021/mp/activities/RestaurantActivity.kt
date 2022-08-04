@@ -34,7 +34,7 @@ class RestaurantActivity : AppCompatActivity() {
 
             val relatedRestaurants = RelatedRestaurants(restaurants, preferences)
             val getRelatedInOrder = relatedRestaurants.getRelatedInOrder(restaurantID)
-            if (getRelatedInOrder.size == 0) {
+            if (getRelatedInOrder.isEmpty()) {
                 binding.relatedOne.text = ""
             } else {
                 binding.relatedOne.text = getRelatedInOrder[0].name
