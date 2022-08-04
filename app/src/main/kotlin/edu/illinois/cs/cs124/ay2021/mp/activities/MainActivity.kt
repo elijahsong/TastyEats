@@ -51,7 +51,7 @@ class MainActivity :
     // when needed, thereby avoid the using of not knowing how long the list of restaurants is (advanced)
     private lateinit var restaurants: List<Restaurant>
 
-    // similarly, we will use a lateinit List to store our preferences
+    // similarly, we will use a lateinit List to store our preferences, as shown below
     private lateinit var preferences: List<Preference>
 
     /*
