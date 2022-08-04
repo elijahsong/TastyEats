@@ -11,7 +11,8 @@ import com.github.wrdlbrnft.sortedlistadapter.SortedListAdapter
  *
  */
 @Suppress("unused")
-class Restaurant(val name: String, val cuisine: String, val id: String) : SortedListAdapter.ViewModel {
+class Restaurant(val name: String, val cuisine: String, val id: String, var strength: Int = 0) : SortedListAdapter
+    .ViewModel {
     constructor() : this("", "", "")
 
     companion object {
@@ -28,7 +29,15 @@ class Restaurant(val name: String, val cuisine: String, val id: String) : Sorted
     }
 
     // You should eventually add a toString method for debugging purposes
-
+    override fun toString(): String = this.name
+    override fun equals(other: Any?) = when {
+        javaClass != other?.javaClass -> false
+        else -> {
+            other as Restaurant
+            id == other.id
+        }
+    }
+    override fun hashCode() = id.hashCode()
     // You should not need to modify this code, which is used by the list adapter component
     override fun <T : Any> isSameModelAs(model: T) = this == model
 
@@ -86,21 +95,21 @@ class Preference(val id: String, val restaurantIDs: List<String>) {
  */
 class RelatedRestaurants(restaurants: List<Restaurant>, preferences: List<Preference>) {
     private val restRel: MutableMap<String, MutableMap<String, Int>> = mutableMapOf()
+    private val restMap: MutableMap<String, Restaurant> = mutableMapOf()
     init {
         // the passed list of restaurants is the list of valid restaurants we can use; ones not in this list should
         // not be in either map
-        val validRestaurants = mutableListOf<String>()
         for (restaurant in restaurants) {
-            validRestaurants += restaurant.id
+            restMap[restaurant.id] = restaurant
         }
         // populate restaurantRelationship; each Preference object in preferences
         for (preference in preferences) {
             for (r1 in preference.restaurantIDs) {
-                if (!validRestaurants.contains(r1)) {
+                if (!restMap.containsKey(r1)) {
                     break
                 }
                 for (r2 in preference.restaurantIDs) {
-                    if (r1 != r2 && validRestaurants.contains(r2)) {
+                    if (r1 != r2 && restMap.containsKey(r2)) {
                         var strength = restRel[r1]?.get(r2) ?: 0
                         strength++
                         if (restRel[r1] != null) {
@@ -115,5 +124,40 @@ class RelatedRestaurants(restaurants: List<Restaurant>, preferences: List<Prefer
     }
     fun getRelated(from: String): Map<String, Int> {
         return restRel[from] ?: mapOf()
+    }
+    fun getRelatedInOrder(from: String): List<Restaurant> {
+        require(restMap.containsKey(from))
+        val myMap = getRelated(from) // Map<String, Int>, where String is RestaurantIDs
+        val newList = mutableListOf<Restaurant>()
+        for ((restID, strength) in myMap) {
+            val restObject = restMap[restID]
+            restObject!!.strength = strength
+            newList += restObject
+        }
+        return newList.sortedBy { it.name }.sortedBy { -1 * it.strength }
+    }
+    fun getConnectedTo(from: String): Set<Restaurant> {
+        require(restMap.containsKey(from))
+        val connectionIDs = mutableSetOf<String>()
+        val toReturn = mutableSetOf<Restaurant>()
+        helper(from, connectionIDs, 1)
+        for (restID in connectionIDs) {
+            if (restID != from) {
+                toReturn += restMap[restID]!!
+            }
+        }
+        return toReturn
+    }
+    private fun helper(restID: String, returnIDs: MutableSet<String>, distance: Int) { // void helper method that
+        if (distance > 2) {
+            return
+        }
+        val neighbors = getRelated(restID) // list of nodes connected to restID
+        for ((neighbor, strength) in neighbors) {
+            if (strength >= 2) {
+                returnIDs += neighbor
+                helper(neighbor, returnIDs, distance + 1)
+            }
+        }
     }
 }

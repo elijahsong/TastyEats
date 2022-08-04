@@ -47,6 +47,8 @@ private val objectMapper = ObjectMapper().apply {
  */
 object Client {
     val restaurantMap = mutableMapOf<String, Restaurant>()
+    lateinit var copyOfRestaurants: List<Restaurant>
+    lateinit var copyOfPreferences: List<Preference>
 
     /*
      * Retrieve and deserialize a list of restaurants from the backend server.
@@ -88,6 +90,8 @@ object Client {
                     for (restaurant in restaurants) {
                         restaurantMap[restaurant.id] = restaurant
                     }
+                    // Populate our list
+                    copyOfRestaurants = restaurants
                     callback(restaurants)
                 } catch (e: Exception) {
                     // There are better approaches than returning null here, but we need to do something to make sure
@@ -123,6 +127,7 @@ object Client {
                             response,
                             object : TypeReference<List<Preference>>() {}
                         )
+                    copyOfPreferences = preferences
                     callback(preferences)
                 } catch (e: Exception) {
                     callback(null)

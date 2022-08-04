@@ -11,6 +11,7 @@ import edu.illinois.cs.cs124.ay2021.mp.R
 import edu.illinois.cs.cs124.ay2021.mp.adapters.RestaurantListAdapter
 import edu.illinois.cs.cs124.ay2021.mp.application.EatableApplication
 import edu.illinois.cs.cs124.ay2021.mp.databinding.ActivityMainBinding
+import edu.illinois.cs.cs124.ay2021.mp.models.Preference
 import edu.illinois.cs.cs124.ay2021.mp.models.Restaurant
 import edu.illinois.cs.cs124.ay2021.mp.models.search
 import edu.illinois.cs.cs124.ay2021.mp.network.Client
@@ -49,6 +50,9 @@ class MainActivity :
     // onCreate will put a copy of the restaurant list here, we can put lateinit to force the list to initialize only
     // when needed, thereby avoid the using of not knowing how long the list of restaurants is (advanced)
     private lateinit var restaurants: List<Restaurant>
+
+    // similarly, we will use a lateinit List to store our preferences
+    private lateinit var preferences: List<Preference>
 
     /*
      * onCreate is the first method called when this activity is created.
@@ -92,7 +96,14 @@ class MainActivity :
             listAdapter.edit().replaceAll(restaurants).commit()
         }
         Log.d("TRACE", "[MainActivity] Continuing with MainActivity")
-
+        // Call Cilent.getPreference so the MainActivity stores a list of references AND a list of preferences
+        // Make sure this comes AFTER getRestaurants completes
+        Client.getPreferences { p ->
+            check(p != null)
+            preferences = p
+        }
+        // Create relatedRestaurant object using the constructor. We should not need a new route in Client.kt
+        // Call methods in RestaurantActivity.kt
         // Bind to the search component so that we can receive events when the contents of the search box change
 
         // registers the callback in onCreate method
